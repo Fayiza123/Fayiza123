@@ -1,0 +1,12 @@
+//FAYIZA K H
+//S3 CSE(AI
+//Rollno:28
+#include<stdio.h>
+int main()
+{
+    int p1[3]={6,2,5};
+    for(int i=2;i>=0;i--)
+    {
+       printf("%dx^%d+",p1[i],i);
+    }
+}
