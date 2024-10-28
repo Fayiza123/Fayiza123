@@ -2,22 +2,22 @@ import java.util.*;
 abstract class Shape {
 public abstract void numberOfSides() 
 }
-    Class Rectangle extends Shape{
+    class Rectangle extends Shape{
     public void numberOfSides(){     
-    System.out.println("Number of sides for the rectangle= 4");
+    System.out.println("Number of sides for the rectangle = 4");
     }
     }
-    Class Triangle extends Shape{
+    class Triangle extends Shape{
     public void numberOfSides(){
-        System.out.println("Number of sides of triangle= 3");
+        System.out.println("Number of sides of triangle = 3");
     }
     }
-    Class Hexagon extends Shape{
+    class Hexagon extends Shape{
     public void numberOfSides(){   
         System.out.println("Number of sides of hexagon = 6");
     }
     }
-class Test {
+pclass Test {
     public static void main(String[] args) {
 
         Rectangle R = new Rectangle();
