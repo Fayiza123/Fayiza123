@@ -1,6 +1,6 @@
 import java.util.*;
 abstract class Shape {
-public abstract void numberOfSides() 
+public abstract void numberOfSides(); 
 }
     class Rectangle extends Shape{
     public void numberOfSides(){     
