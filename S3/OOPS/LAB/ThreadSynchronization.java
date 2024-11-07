@@ -1,46 +1,36 @@
-public class ThreadSynchronization{
-
-    public static void main(String[] args) {
-        Counter counter = new Counter();
-        Thread thread1 = new Thread(new IncrementTask(counter));
-        Thread thread2 = new Thread(new IncrementTask(counter));
-       
-        thread1.start();
-        thread2.start();
-        
+//program to perform thread synchronization
+//Fayiza_28
+Class Display {
+    public synchronized void print(String str) {
         try {
-            thread1.join();
-            thread2.join();
+                Thread.sleep(1000);
+            System.out.println(“String is: “ + str);
         } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        
-        System.out.println("Final counter value: " + counter.getCount());
-    }
-}
-class Counter {
-    private int count = 0;
-    
-    public synchronized void increment() {
-        count++;
-    }
-    
-    public int getCount() {
-        return count;
-    }
-}
-
-class IncrementTask implements Runnable {
-    private Counter counter;
-    
-    public IncrementTask(Counter counter) {
-        this.counter = counter;
-    }
-    
-    public void run() {
-        for (int i = 0; i < 1000; i++) {
-            counter.increment();
+            System.out.println(e.getMessage());
         }
     }
 }
+Class SyncThread extends Thread {
+    Private Display d;
+    Private String str;
+  Public SyncThread(Display d, String str) {
+        This.d = d;
+        This.str = str;
+    }
+public void run() {
+        d.print(str);
+    }
+}
+Class Test {
+    public static void main(String args[]) {
+        Display d = new Display();
+        SyncThread t1 = new SyncThread(d, “Hello”);
+        SyncThread t2 = new SyncThread(d, “World”);
+        t1.start();
+        t2.start();
+    }
+}
+OUTPUT
+String is: Hello
+String is: World
 
