@@ -1,0 +1,166 @@
+mysql> create database CMS;
+ERROR 1007 (HY000): Can't create database 'CMS'; database exists
+mysql> create database cms;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> use cms
+Database changed
+mysql> show tables;
+Empty set (0.00 sec)
+
+mysql> drop database cms;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> create table department(dept_id number(4) primary key,name char(15));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'number(4) primary key,name char(15))' at line 1
+mysql> create table department(dept_id number(4),name char(15),dept_id primary key);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'number(4),name char(15),dept_id primary key)' at line 1
+mysql> create database ai;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use ai
+Database changed
+mysql> create table department(dept_id int primary key,name char(20),number int,manager_id int,startdate date,location varchar(30),foreign key(manager_id) references employee(emp_id));
+ERROR 1824 (HY000): Failed to open the referenced table 'employee'
+mysql> mysql> create table department(dept_id int primary key,name char(15),number int,manager_id int,startdate date,location varchar(25),foreign key (manager_id)references employee (employee_id))
+    -> 
+    -> mysql> create table department(dept_id int primary key,name char(15),number int,manager_id int,startdate date,location varchar(25),foreign key (manager_id)references employee (employee_id));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'mysql> create table department(dept_id int primary key,name char(15),number int,' at line 1
+mysql> CREATE TABLE Department (
+    ->     DepartmentID INT PRIMARY KEY,         -- Primary Key for the Department table
+    ->     Name VARCHAR(255) NOT NULL,           -- Department name (e.g., Sales, HR)
+    ->     Number INT,                          -- Department number
+    ->     ManagerID INT,                       -- Foreign Key referencing Employee table (EmployeeID)
+    ->     StartDate DATE,                       -- The start date of the department or manager
+    ->     Location VARCHAR(255),                -- Department location (e.g., Office 1, New York)
+    ->     FOREIGN KEY (ManagerID) REFERENCES Employee(EmployeeID)  -- Foreign Key constraint linking to Employee table
+    -> );
+ERROR 1824 (HY000): Failed to open the referenced table 'Employee'
+mysql> create table employee(emp_id int primary key,name char(20),ssn int,address varchar(30),salary number(6),gender char(1),birthdate date,role char(15),department_id int,foreign key department_id references department(dept_id),supvis_id int,foreign key supvis_id references employee(emp_id));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'number(6),gender char(1),birthdate date,role char(15),department_id int,foreign ' at line 1
+mysql> create table department(dept_id int primary key,name char(20),number int,manager_id int,startdate date,location varchar(30));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table project(proj_id int primary key,name char(20),number int,location varchar(30),dept_id int);
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> create table employee(emp_id int primary key,name char(20),ssn int,address varchar(30),salary decimal(6,2),gender char(2),role char(15),dept_id int,supervisor_id int);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table proj_assign(assign_id int primary key,emp_id int,proj_id int);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> alter table proj_assign add hoursperweek decimal(5,2);
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> create table dependent(dependent_id int primary key,emp_id int,fname char(10),gender char(1),birthdate date,relationship varchar(20));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> alter table department add constraint fk_manager_id foreign key(manager_id)references employee(emp_id);
+Query OK, 0 rows affected (0.12 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc department;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| dept_id    | int         | NO   | PRI | NULL    |       |
+| name       | char(20)    | YES  |     | NULL    |       |
+| number     | int         | YES  |     | NULL    |       |
+| manager_id | int         | YES  | MUL | NULL    |       |
+| startdate  | date        | YES  |     | NULL    |       |
+| location   | varchar(30) | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+6 rows in set (0.01 sec)
+
+mysql> alter table project add constraint fk_dept_id foreign key (dept_id)references department(dept_id);
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc project;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| proj_id  | int         | NO   | PRI | NULL    |       |
+| name     | char(20)    | YES  |     | NULL    |       |
+| number   | int         | YES  |     | NULL    |       |
+| location | varchar(30) | YES  |     | NULL    |       |
+| dept_id  | int         | YES  | MUL | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> alter table employee add constraint fk_dept_id foreign key (dept_id)references department(dept_id);
+ERROR 1826 (HY000): Duplicate foreign key constraint name 'fk_dept_id'
+mysql> alter table employee add constraint fk_supervisor_id foreign key (supervisor_id)references employee(emp_id);
+Query OK, 0 rows affected (0.12 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table employee add constraint fk_dept_id foreign key(dept_id)references department(dept_id);
+ERROR 1826 (HY000): Duplicate foreign key constraint name 'fk_dept_id'
+mysql> alter table employee add constraint fk_department_id foreign key(dept_id)references department(dept_id);
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc employee;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| emp_id        | int          | NO   | PRI | NULL    |       |
+| name          | char(20)     | YES  |     | NULL    |       |
+| ssn           | int          | YES  |     | NULL    |       |
+| address       | varchar(30)  | YES  |     | NULL    |       |
+| salary        | decimal(6,2) | YES  |     | NULL    |       |
+| gender        | char(2)      | YES  |     | NULL    |       |
+| role          | char(15)     | YES  |     | NULL    |       |
+| dept_id       | int          | YES  | MUL | NULL    |       |
+| supervisor_id | int          | YES  | MUL | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+9 rows in set (0.00 sec)
+
+mysql> alter table proj_assigne add constraint fk_emp_id foreign key(emp_id)references employee(emp_id);
+ERROR 1146 (42S02): Table 'ai.proj_assigne' doesn't exist
+mysql> alter table proj_assign add constraint fk_emp_id foreign key(emp_id)references employee(emp_id);
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table proj_assign add constraint fk_proj_id foreign key(proj_id)references
+project(proj_id);
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc proj_assign;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| assign_id    | int          | NO   | PRI | NULL    |       |
+| emp_id       | int          | YES  | MUL | NULL    |       |
+| proj_id      | int          | YES  | MUL | NULL    |       |
+| hoursperweek | decimal(5,2) | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table dependentn add constraint fk_emp_id foreign key(emp_id)references employee(emp_id);
+ERROR 1146 (42S02): Table 'ai.dependentn' doesn't exist
+mysql> alter table dependent add constraint fk_emp_id foreign key(emp_id)references employee(emp_id);
+ERROR 1826 (HY000): Duplicate foreign key constraint name 'fk_emp_id'
+mysql> alter table dependent add constraint fk_employee_id foreign key(emp_id)references
+ employee(emp_id);
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc dependent;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| dependent_id | int         | NO   | PRI | NULL    |       |
+| emp_id       | int         | YES  | MUL | NULL    |       |
+| fname        | char(10)    | YES  |     | NULL    |       |
+| gender       | char(1)     | YES  |     | NULL    |       |
+| birthdate    | date        | YES  |     | NULL    |       |
+| relationship | varchar(20) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> 
+
