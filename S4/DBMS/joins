@@ -1,0 +1,218 @@
+mysql> create database db;
+Query OK, 1 row affected (0.03 sec)
+
+mysql> use db
+Database changed
+mysql> create table departments(department_id int primary key,department_name varchar(100));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table employee(employee_id int primary key,name varchar(100),department_id int,department_id foreign key references departments(department_id));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'foreign key references departments(department_id))' at line 1
+mysql> create table employee(employee_id int primary key,name varchar(100),department_id int,foreign key references departments(department_id));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'references departments(department_id))' at line 1
+mysql> create table employee(employee_id int primary key,name varchar(100),department_id int);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> alter table employee add constraint fk_department_id foreign key(department_id) references departments(department_id);
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> insert into departments(department_id,department_name)values(1001,'HR'),(1002,'Finance'),(1003,'business_mangmnt'),(1004,'IT'),(1005,'AI');
+Query OK, 5 rows affected (0.03 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from departments;
++---------------+------------------+
+| department_id | department_name  |
++---------------+------------------+
+|          1001 | HR               |
+|          1002 | Finance          |
+|          1003 | business_mangmnt |
+|          1004 | IT               |
+|          1005 | AI               |
++---------------+------------------+
+5 rows in set (0.00 sec)
+
+mysql> insert into employee(employee_id,name,department_id)values(201,'fayiza',1002),(202,'gokul',1006),(203,'fathima',1004),(204,'devika',1007),(205,'govind',1003)'(206,'athul',1001);
+    '> 
+    '> 
+    '> ;
+    '> )
+    '> '
+    -> 
+    -> 
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''(206,'athul',1001);
+
+
+;
+)
+'' at line 1
+mysql> insert into employee(employee_id,name,department_id)values(201,'fayiza',1002),(202,'gokul',1006),(203,'fathima',1004),(204,'devika',1007),(205,'govind',1003)'(206,'athul',1001);
+
+
+;
+)
+';
+    '> ;
+    '> '
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''(206,'athul',1001);
+;
+'' at line 1
+mysql> insert into employee(employee_id,name,department_id)values(201,'fayiza',1002),(202,'gokul',1006),(203,'fathima',1004),(204,'devika',1007),(205,'govind',1003),(206,'athul',1001);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`db`.`employee`, CONSTRAINT `fk_department_id` FOREIGN KEY (`department_id`) REFERENCES `departments` (`department_id`))
+mysql> insert into employee(employee_id,name,department_id)values(201,'fayiza',1002),(202,'gokul',1005),(203,'fathima',1004),(204,'devika',1001),(205,'govind',1003);
+Query OK, 5 rows affected (0.02 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee;
++-------------+---------+---------------+
+| employee_id | name    | department_id |
++-------------+---------+---------------+
+|         201 | fayiza  |          1002 |
+|         202 | gokul   |          1005 |
+|         203 | fathima |          1004 |
+|         204 | devika  |          1001 |
+|         205 | govind  |          1003 |
++-------------+---------+---------------+
+5 rows in set (0.00 sec)
+
+mysql> select name,department_name from employee inner join departments on employee.department_id=departments.department_id;
++---------+------------------+
+| name    | department_name  |
++---------+------------------+
+| fayiza  | Finance          |
+| gokul   | AI               |
+| fathima | IT               |
+| devika  | HR               |
+| govind  | business_mangmnt |
++---------+------------------+
+5 rows in set (0.00 sec)
+
+mysql> select employee.name,departments.department_name from employee inner join departments on employee.department_id=departments.department_id;
++---------+------------------+
+| name    | department_name  |
++---------+------------------+
+| fayiza  | Finance          |
+| gokul   | AI               |
+| fathima | IT               |
+| devika  | HR               |
+| govind  | business_mangmnt |
++---------+------------------+
+5 rows in set (0.00 sec)
+
+mysql> select name,department_name from employee e inner join departments d on e.department_id=d.department_id;
++---------+------------------+
+| name    | department_name  |
++---------+------------------+
+| fayiza  | Finance          |
+| gokul   | AI               |
+| fathima | IT               |
+| devika  | HR               |
+| govind  | business_mangmnt |
++---------+------------------+
+5 rows in set (0.00 sec)
+
+mysql> select e.name,d.department_name from employee e inner join departments don e.department_id=d.department_id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'e.department_id=d.department_id' at line 1
+mysql> select e.name,d.department_name from employee e inner join departments d on e.department_id=d.department_id;
++---------+------------------+
+| name    | department_name  |
++---------+------------------+
+| fayiza  | Finance          |
+| gokul   | AI               |
+| fathima | IT               |
+| devika  | HR               |
+| govind  | business_mangmnt |
++---------+------------------+
+5 rows in set (0.00 sec)
+
+mysql> select employee.name,departments.department_name from employee left join departments on employee.department_id=departments.department_id;
++---------+------------------+
+| name    | department_name  |
++---------+------------------+
+| fayiza  | Finance          |
+| gokul   | AI               |
+| fathima | IT               |
+| devika  | HR               |
+| govind  | business_mangmnt |
++---------+------------------+
+5 rows in set (0.00 sec)
+
+mysql> select employee.name,departments.department_name from employee right join departments on employee.department_id=departments.department_id;
++---------+------------------+
+| name    | department_name  |
++---------+------------------+
+| devika  | HR               |
+| fayiza  | Finance          |
+| govind  | business_mangmnt |
+| fathima | IT               |
+| gokul   | AI               |
++---------+------------------+
+5 rows in set (0.01 sec)
+
+mysql> select employee.name,departments.department_name from employee left join departments on employee.department_id=departments.department_id union select employee.name.departments.department_name from employee right join departments on employee.department_id=departments.department_id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.department_name from employee right join departments on employee.department_id=' at line 1
+mysql> select employee.name,departments.department_name from employee left join departments on employee.department_id=departments.department_id union select employee.name,departments.department_name from employee right join departments on employee.department_id=departments.department_id;
++---------+------------------+
+| name    | department_name  |
++---------+------------------+
+| fayiza  | Finance          |
+| gokul   | AI               |
+| fathima | IT               |
+| devika  | HR               |
+| govind  | business_mangmnt |
++---------+------------------+
+5 rows in set (0.03 sec)
+
+mysql> alter table employee add column manager_id int;
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee;
++-------------+---------+---------------+------------+
+| employee_id | name    | department_id | manager_id |
++-------------+---------+---------------+------------+
+|         201 | fayiza  |          1002 |       NULL |
+|         202 | gokul   |          1005 |       NULL |
+|         203 | fathima |          1004 |       NULL |
+|         204 | devika  |          1001 |       NULL |
+|         205 | govind  |          1003 |       NULL |
++-------------+---------+---------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> update employee set manager_id=5 where employee_id=201;
+Query OK, 1 row affected (0.03 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update employee set manager_id=3 where employee_id=202;
+Query OK, 1 row affected (0.03 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update employee set manager_id=8 where employee_id=203;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update employee set manager_id=2 where employee_id=204;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update employee set manager_id=4 where employee_id=205;
+Query OK, 1 row affected (0.03 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employee;
++-------------+---------+---------------+------------+
+| employee_id | name    | department_id | manager_id |
++-------------+---------+---------------+------------+
+|         201 | fayiza  |          1002 |          5 |
+|         202 | gokul   |          1005 |          3 |
+|         203 | fathima |          1004 |          8 |
+|         204 | devika  |          1001 |          2 |
+|         205 | govind  |          1003 |          4 |
++-------------+---------+---------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> 
+
