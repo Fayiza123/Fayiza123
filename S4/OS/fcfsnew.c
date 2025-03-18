@@ -30,7 +30,7 @@ void main()
     }
     avg_tt /= n;
     
-    printf("\nProcess\tBurst Time\tWaiting Time\tTurnaround Time\n");
+    printf("\nProcess\tBT\tWT\tTT\n");
     for(int i=0;i<n;i++)
     printf("\np%d\t\t%d\t\t%d\t\t%d\n",p[i],bt[i],wt[i],tt[i]);
     
