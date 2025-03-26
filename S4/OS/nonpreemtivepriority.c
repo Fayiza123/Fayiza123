@@ -59,7 +59,7 @@ void main()
     
     printf("\n---------------------------------------------------\n");
     
-    printf("0");
+    printf("%d\t",wt[0]);
     for(int i=0;i<n;i++)
     {
        printf("\t%d\t",tt[i]);
